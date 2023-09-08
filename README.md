@@ -4,8 +4,8 @@ USAMOS TODOS ECLIPSE, JAVA 17
 
 dependecias utilizadas en el pom.xml:
 
-<dependencies>
-	<!-- aca las dependencias -->
+<!--
+ <dependencies>
 	<dependency>
 		<groupId>org.apache.commons</groupId>
 		<artifactId>commons-csv</artifactId>
@@ -17,3 +17,4 @@ dependecias utilizadas en el pom.xml:
 		<version>8.0.30</version>
 	</dependency>
 </dependencies>
+-->
