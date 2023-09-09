@@ -1,5 +1,7 @@
 package integrador1Arqui.factory;
 
+import java.sql.SQLException;
+
 import integrador1Arqui.clases.Cliente;
 import integrador1Arqui.clases.Factura;
 import integrador1Arqui.clases.FacturaProducto;
@@ -17,7 +19,7 @@ public abstract class AbstractDAOFactory {
 	
 	public abstract DAO<Cliente> getClienteDAO();
 
-	public static AbstractDAOFactory getDAOFactory(int whichFactory) {
+	public static AbstractDAOFactory getDAOFactory(int whichFactory) throws SQLException {
 		switch (whichFactory) {
 		case MYSQL_JDBC:
 			return MySqlJDBCDAOFactory.getInstance();
