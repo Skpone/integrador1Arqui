@@ -55,21 +55,21 @@ public class MySqlJDBCDAOFactory extends AbstractDAOFactory {
 
 	@Override
 	public DAO<Producto> getProductoDAO() {
-		return new MySqlProductoDAO();
+		return new MySqlProductoDAO(connection);
 	}
 
 	@Override
 	public DAO<FacturaProducto> getFacturaProductoDAO() {
-		return new MySqlFacturaProductoDAO();
+		return new MySqlFacturaProductoDAO(connection);
 	}
 
 	@Override
 	public DAO<Factura> getFacturaDAO() {
-		return new MySqlFacturaDAO();
+		return new MySqlFacturaDAO(connection);
 	}
 
 	@Override
 	public DAO<Cliente> getClienteDAO() {
-		return new MySqlClienteDAO();
+		return new MySqlClienteDAO(connection);
 	}
 }

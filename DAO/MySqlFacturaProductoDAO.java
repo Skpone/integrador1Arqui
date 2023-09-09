@@ -1,16 +1,19 @@
 package integrador1Arqui.DAO;
 
+import java.sql.Connection;
 import java.util.List;
 
 import integrador1Arqui.clases.FacturaProducto;
 import integrador1Arqui.interfaces.DAO;
 
 public class MySqlFacturaProductoDAO implements DAO<FacturaProducto> {
+	private Connection connection;
 	
-	public MySqlFacturaProductoDAO() {
-		
+	public MySqlFacturaProductoDAO(Connection connection) {
+		this.connection = connection;
 	}
 
+	
 	@Override
 	public void insert() {
 		// TODO Auto-generated method stub

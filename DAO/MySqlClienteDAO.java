@@ -1,14 +1,18 @@
 package integrador1Arqui.DAO;
+import java.sql.Connection;
 import java.util.List;
 
 import integrador1Arqui.clases.Cliente;
 import integrador1Arqui.interfaces.DAO;
 
 public class MySqlClienteDAO implements DAO<Cliente> {
+	private Connection connection;
 	
-	public MySqlClienteDAO() {
-		
+	
+	public MySqlClienteDAO(Connection connection) {
+		this.connection = connection;
 	}
+	
 	
 	@Override
 	public void insert() {

@@ -1,16 +1,19 @@
 package integrador1Arqui.DAO;
 
+import java.sql.Connection;
 import java.util.List;
 
 import integrador1Arqui.clases.Producto;
 import integrador1Arqui.interfaces.DAO;
 
 public class MySqlProductoDAO implements DAO<Producto> {
+	private Connection connection;
 	
-	public MySqlProductoDAO() {
-		
+	public MySqlProductoDAO(Connection connection) {
+		this.connection = connection;
 	}
 
+	
 	@Override
 	public void insert() {
 		// TODO Auto-generated method stub
