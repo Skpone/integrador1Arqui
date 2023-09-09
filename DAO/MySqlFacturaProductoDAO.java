@@ -41,4 +41,10 @@ public class MySqlFacturaProductoDAO implements DAO<FacturaProducto> {
 		return null;
 	}
 
+	@Override
+	public void createTable() {
+		// TODO Auto-generated method stub
+		//USAR IF NOT EXISTS
+	}
+
 }

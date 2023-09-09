@@ -8,6 +8,6 @@ public interface DAO<T> {
 	 public boolean update(int id);
 	 public T get(int id);
 	 public List<T> getAll();
-	 
+	 public void createTable();
 
 }
