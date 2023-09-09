@@ -1,15 +1,17 @@
 package integrador1Arqui.factory;
 
+import integrador1Arqui.interfaces.DAO;
+
 public abstract class AbstractDAOFactory {
 	public static final int MYSQL_JDBC = 1;
 	
-	public abstract ProductoDAO getProductoDAO();
+	public abstract DAO getProductoDAO();
 
-	public abstract FacturaProductoDAO getFacturaProductoDAO();
+	public abstract DAO getFacturaProductoDAO();
 	
-	public abstract FacturaDAO getFacturaDAO();
+	public abstract DAO getFacturaDAO();
 	
-	public abstract ClienteDAO getCustomerDAO();
+	public abstract DAO getCustomerDAO();
 
 	public static AbstractDAOFactory getDAOFactory(int whichFactory) {
 		switch (whichFactory) {
