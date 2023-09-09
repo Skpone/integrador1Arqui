@@ -6,6 +6,10 @@ import integrador1Arqui.clases.Factura;
 import integrador1Arqui.interfaces.DAO;
 
 public class MySqlFacturaDAO implements DAO<Factura> {
+	
+	public MySqlFacturaDAO() {
+		
+	}
 
 	@Override
 	public void insert() {

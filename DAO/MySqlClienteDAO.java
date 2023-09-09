@@ -5,7 +5,11 @@ import integrador1Arqui.clases.Cliente;
 import integrador1Arqui.interfaces.DAO;
 
 public class MySqlClienteDAO implements DAO<Cliente> {
-
+	
+	public MySqlClienteDAO() {
+		
+	}
+	
 	@Override
 	public void insert() {
 		// TODO Auto-generated method stub

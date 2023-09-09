@@ -6,6 +6,10 @@ import integrador1Arqui.clases.Producto;
 import integrador1Arqui.interfaces.DAO;
 
 public class MySqlProductoDAO implements DAO<Producto> {
+	
+	public MySqlProductoDAO() {
+		
+	}
 
 	@Override
 	public void insert() {
