@@ -1,10 +1,13 @@
 package integrador1Arqui.interfaces;
 
-public interface DAO {
-	public int insert();
-	 public boolean deleteById(int id);
-	 public boolean modify(int id);
-	 //public collection selectAll();
+import java.util.List;
+
+public interface DAO<T> {
+	 public void insert();
+	 public boolean delete(int id);
+	 public boolean update(int id);
+	 public T get(int id);
+	 public List<T> getAll();
 	 
 
 }
