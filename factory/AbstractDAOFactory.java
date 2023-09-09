@@ -3,11 +3,11 @@ package integrador1Arqui.factory;
 public abstract class AbstractDAOFactory {
 	public static final int MYSQL_JDBC = 1;
 	
-	public abstract MySqlProductoDAO getProductoDAO();
+	public abstract ProductoDAO getProductoDAO();
 
-	public abstract MySqlFacturaProductoDAO getFacturaProductoDAO();
+	public abstract FacturaProductoDAO getFacturaProductoDAO();
 	
-	public abstract MySqlFacturaDAO getFacturaDAO();
+	public abstract FacturaDAO getFacturaDAO();
 	
 	public abstract ClienteDAO getCustomerDAO();
 
