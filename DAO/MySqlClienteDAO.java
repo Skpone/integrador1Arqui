@@ -15,42 +15,109 @@ public class MySqlClienteDAO implements DAO<Cliente> {
 	
 	
 	@Override
-	public void insert() {
-		// TODO Auto-generated method stub
-		
+	public void insert(int id, String nombre, String email) throws SQLException {
+		String query = "INSERT INTO cliente (idCliente, nombre, email) VALUES (?, ?, ?)";
+		PreparedStatement ps = this.connection.prepareStatement(query);
+		ps.setInt(1, id);
+		ps.setString(2, nombre);
+		ps.setString(3, email);
+
+		ps.executeUpdate();
+		ps.close();
+
+		this.connection.commit();
 	}
 
 	@Override
 	public boolean delete(int id) {
-		// TODO Auto-generated method stub
+		try {
+			String query = "DELETE FROM cliente WHERE idCliente = ?";
+			PreparedStatement ps = this.connection.prepareStatement(query);
+			ps.setInt(1, id);
+
+			ps.executeUpdate();
+			ps.close();
+
+			return true;
+		} catch (SQLException error) {
+			error.printStackTrace();
+			return false;
+		}
+
 		return false;
 	}
 
 	@Override
-	public boolean update(int id) {
-		// TODO Auto-generated method stub
+	public boolean update(int id, String nombre, String email) {
+		try {
+			String query = "UPDATE cliente SET nombre = ?, email = ? WHERE idCliente = ?";
+			PreparedStatement ps = this.connection.prepareStatement(query);
+			ps.setString(1, nombre);
+			ps.setString(2, email);
+			ps.setInt(3, id);
+
+			ps.executeUpdate();
+			ps.close();
+
+			return true;
+		} catch (SQLException error) {
+			error.printStackTrace();
+			return false;
+		}
+
 		return false;
 	}
 
 	@Override
 	public Cliente get(int id) {
-		//consulta sql agarra cliente
-		//agarras los atributos de las columnas
-		//creas objeto cliente
-		//usas los sets para ponerselo al objeto
-		return null;
+		try {
+			String query = "SELECT * FROM cliente WHERE idCliente = ?";
+			PreparedStatement ps = this.connection.prepareStatement(query);
+			ps.setInt(1, id);
+
+			ResultSet rs = ps.executeQuery();
+
+			if (rs.next()) {
+				return new Cliente(rs.getInt(1), rs.getString(2), rs.getString(3));
+			} else {
+				return null;
+			}
+		} catch (SQLException error) {
+			error.printStackTrace();
+			return null;
+		}
 	}
 
 	@Override
 	public List<Cliente> getAll() {
-		// TODO Auto-generated method stub
-		return null;
+		ArrayList<Cliente> lista = new ArrayList<>();
+
+		try {
+			String query = "SELECT * FROM cliente";
+			PreparedStatement ps = this.connection.prepareStatement(query);
+
+			ResultSet rs = ps.executeQuery();
+
+			while (rs.next()) {
+				lista.add(new Cliente(rs.getInt(1), rs.getString(2), rs.getString(3)));
+			}
+		} catch (SQLException error) {
+			error.printStackTrace();
+		}
+
+		return lista;
 	}
 
 	@Override
 	public void createTable() {
-		// TODO Auto-generated method stub
-		//USAR IF NOT EXISTS
+		try {
+			String query = "CREATE TABLE IF NOT EXISTS cliente (idCliente INT, nombre VARCHAR(255), email VARCHAR(255), PRIMARY KEY (idCliente))";
+
+			this.connection.prepareStatement(query).execute();
+			this.connection.commit();
+		} catch (SQLException error) {
+			error.printStackTrace();
+		}
 	}
 
 }

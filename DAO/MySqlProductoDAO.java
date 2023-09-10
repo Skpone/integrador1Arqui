@@ -15,39 +15,109 @@ public class MySqlProductoDAO implements DAO<Producto> {
 
 	
 	@Override
-	public void insert() {
-		// TODO Auto-generated method stub
-		
+	public void insert(int id, String nombre, float valor) throws SQLException {
+		String query = "INSERT INTO producto (idProducto, nombre, valor) VALUES (?, ?, ?)";
+		PreparedStatement ps = this.connection.prepareStatement(query);
+		ps.setInt(1, id);
+		ps.setString(2, nombre);
+		ps.setFloat(3, valor);
+
+		ps.executeUpdate();
+		ps.close();
+
+		this.connection.commit();
 	}
 
 	@Override
 	public boolean delete(int id) {
-		// TODO Auto-generated method stub
+		try {
+			String query = "DELETE FROM producto WHERE idProducto = ?";
+			PreparedStatement ps = this.connection.prepareStatement(query);
+			ps.setInt(1, id);
+
+			ps.executeUpdate();
+			ps.close();
+
+			return true;
+		} catch (SQLException error) {
+			error.printStackTrace();
+			return false;
+		}
+
 		return false;
 	}
 
 	@Override
-	public boolean update(int id) {
-		// TODO Auto-generated method stub
+	public boolean update(int id, String nombre, float valor) {
+		try {
+			String query = "UPDATE producto SET nombre = ?, valor = ? WHERE idProducto = ?";
+			PreparedStatement ps = this.connection.prepareStatement(query);
+			ps.setString(1, nombre);
+			ps.setFloat(2, valor);
+			ps.setInt(3, id);
+
+			ps.executeUpdate();
+			ps.close();
+
+			return true;
+		} catch (SQLException error) {
+			error.printStackTrace();
+			return false;
+		}
+
 		return false;
 	}
 
 	@Override
 	public Producto get(int id) {
-		// TODO Auto-generated method stub
-		return null;
+		try {
+			String query = "SELECT * FROM producto WHERE idProducto = ?";
+			PreparedStatement ps = this.connection.prepareStatement(query);
+			ps.setInt(1, id);
+
+			ResultSet rs = ps.executeQuery();
+
+			if (rs.next()) {
+				return new Producto(rs.getInt(1), rs.getString(2), rs.getFloat(3));
+			} else {
+				return null;
+			}
+		} catch (SQLException error) {
+			error.printStackTrace();
+			return null;
+		}
 	}
 
 	@Override
 	public List<Producto> getAll() {
-		// TODO Auto-generated method stub
-		return null;
+		ArrayList<Producto> lista = new ArrayList<>();
+
+		try {
+			String query = "SELECT * FROM producto";
+			PreparedStatement ps = this.connection.prepareStatement(query);
+
+			ResultSet rs = ps.executeQuery();
+
+			while (rs.next()) {
+				lista.add(new Producto(rs.getInt(1), rs.getString(2), rs.getFloat(3)));
+			}
+		} catch (SQLException error) {
+			error.printStackTrace();
+		}
+
+		return lista;
 	}
 
 	@Override
 	public void createTable() {
-		// TODO Auto-generated method stub
-		//USAR IF NOT EXISTS
+		try {
+			String query = "CREATE TABLE IF NOT EXISTS producto (idProducto INT, nombre VARCHAR(45), valor FLOAT, PRIMARY KEY (idProducto))";
+
+			this.connection.prepareStatement(query).execute();
+			this.connection.commit();
+		} catch (SQLException error) {
+			error.printStackTrace();
+		}
 	}
 
 }

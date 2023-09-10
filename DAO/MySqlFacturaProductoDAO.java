@@ -15,15 +15,22 @@ public class MySqlFacturaProductoDAO implements DAO<FacturaProducto> {
 
 	
 	@Override
-	public void insert() {
-		// TODO Auto-generated method stub
-		
+	public void insert(int idFactura, int idProducto, int cantidad) throws SQLException {
+		String query = "INSERT INTO factura_producto (idFactura, idProducto, cantidad) VALUES (?, ?, ?)";
+		PreparedStatement ps = this.connection.prepareStatement(query);
+		ps.setInt(1, idFactura);
+		ps.setInt(2, idProducto);
+		ps.setInt(3, cantidad);
+
+		ps.executeUpdate();
+		ps.close();
+
+		this.connection.commit();
 	}
 
 	@Override
 	public boolean delete(int id) {
 		// TODO Auto-generated method stub
-		return false;
 	}
 
 	@Override
@@ -40,14 +47,34 @@ public class MySqlFacturaProductoDAO implements DAO<FacturaProducto> {
 
 	@Override
 	public List<FacturaProducto> getAll() {
-		// TODO Auto-generated method stub
-		return null;
+		ArrayList<FacturaProducto> lista = new ArrayList<>();
+
+		try {
+			String query = "SELECT * FROM factura_producto";
+			PreparedStatement ps = this.connection.prepareStatement(query);
+
+			ResultSet rs = ps.executeQuery();
+
+			while (rs.next()) {
+				lista.add(new FacturaProducto(rs.getInt(1), rs.getInt(2), rs.getInt(3)));
+			}
+		} catch (SQLException error) {
+			error.printStackTrace();
+		}
+
+		return lista;
 	}
 
 	@Override
 	public void createTable() {
-		// TODO Auto-generated method stub
-		//USAR IF NOT EXISTS
+		try {
+			String query = "CREATE TABLE IF NOT EXISTS factura_producto (idFactura INT, idProducto INT, cantidad INT)";
+
+			this.connection.prepareStatement(query).execute();
+			this.connection.commit();
+		} catch (SQLException error) {
+			error.printStackTrace();
+		}
 	}
 
 }

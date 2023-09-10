@@ -15,39 +15,107 @@ public class MySqlFacturaDAO implements DAO<Factura> {
 
 	
 	@Override
-	public void insert() {
-		// TODO Auto-generated method stub
-		
+	public void insert(int idFactura, int idCliente) throws SQLException {
+		String query = "INSERT INTO factura (idFactura, idCliente) VALUES (?, ?)";
+		PreparedStatement ps = this.connection.prepareStatement(query);
+		ps.setInt(1, id);
+		ps.setInt(2, idCliente);
+
+		ps.executeUpdate();
+		ps.close();
+
+		this.connection.commit();
 	}
 
 	@Override
 	public boolean delete(int id) {
-		// TODO Auto-generated method stub
+		try {
+			String query = "DELETE FROM factura WHERE idFactura = ?";
+			PreparedStatement ps = this.connection.prepareStatement(query);
+			ps.setInt(1, id);
+
+			ps.executeUpdate();
+			ps.close();
+
+			return true;
+		} catch (SQLException error) {
+			error.printStackTrace();
+			return false;
+		}
+
 		return false;
 	}
 
 	@Override
-	public boolean update(int id) {
-		// TODO Auto-generated method stub
+	public boolean update(int idFactura, int idCliente) {
+		try {
+			String query = "UPDATE factura SET idCliente = ? WHERE idFactura = ?";
+			PreparedStatement ps = this.connection.prepareStatement(query);
+			ps.setString(1, idCliente);
+			ps.setInt(2, idFactura);
+
+			ps.executeUpdate();
+			ps.close();
+
+			return true;
+		} catch (SQLException error) {
+			error.printStackTrace();
+			return false;
+		}
+
 		return false;
 	}
 
 	@Override
 	public Factura get(int id) {
-		// TODO Auto-generated method stub
-		return null;
+		try {
+			String query = "SELECT * FROM factura WHERE idFactura = ?";
+			PreparedStatement ps = this.connection.prepareStatement(query);
+			ps.setInt(1, id);
+
+			ResultSet rs = ps.executeQuery();
+
+			if (rs.next()) {
+				return new Factura(rs.getInt(1), rs.getInt(2));
+			} else {
+				return null;
+			}
+		} catch (SQLException error) {
+			error.printStackTrace();
+			return null;
+		}
 	}
 
 	@Override
 	public List<Factura> getAll() {
-		// TODO Auto-generated method stub
-		return null;
+		ArrayList<Factura> lista = new ArrayList<>();
+
+		try {
+			String query = "SELECT * FROM factura";
+			PreparedStatement ps = this.connection.prepareStatement(query);
+
+			ResultSet rs = ps.executeQuery();
+
+			while (rs.next()) {
+				lista.add(new Factura(rs.getInt(1), rs.getInt(2)));
+			}
+		} catch (SQLException error) {
+			error.printStackTrace();
+		}
+
+		return lista;
 	}
 
 	@Override
 	public void createTable() {
-		// TODO Auto-generated method stub
-		//USAR IF NOT EXISTS
+		try {
+			String query = "CREATE TABLE IF NOT EXISTS factura (idFactura INT, idCliente INT, PRIMARY KEY (idFactura), FOREIGN KEY (idCliente) REFERENCES cliente (idCliente))";
+
+			this.connection.prepareStatement(query).execute();
+			this.connection.commit();
+		} catch (SQLException error) {
+			error.printStackTrace();
+		}
 	}
 
 }
