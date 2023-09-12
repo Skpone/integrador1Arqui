@@ -8,6 +8,7 @@ import java.util.ArrayList;
 import java.util.List;
 
 import integrador1Arqui.clases.FacturaProducto;
+import integrador1Arqui.clases.Producto;
 import integrador1Arqui.interfaces.DAO;
 
 public class MySqlFacturaProductoDAO implements DAO<FacturaProducto> {
@@ -87,12 +88,9 @@ public class MySqlFacturaProductoDAO implements DAO<FacturaProducto> {
 
 	public Producto getProductoQueMasRecaudo() {
 		try {
-			String query = "SELECT p.idProducto, p.nombre, SUM(fp.cantidad * p.valor) AS recaudacion " +
-							"FROM factura_producto fp " +
-							"INNER JOIN producto p ON fp.idProducto = p.idProducto " +
-							"GROUP BY p.idProducto, p.nombre " +
-							"ORDER BY recaudacion DESC " +
-							"LIMIT 1";
+			String query = "SELECT p.idProducto, p.nombre, SUM(fp.cantidad * p.valor) AS recaudacion "
+					+ "FROM factura_producto fp " + "INNER JOIN producto p ON fp.idProducto = p.idProducto "
+					+ "GROUP BY p.idProducto, p.nombre " + "ORDER BY recaudacion DESC " + "LIMIT 1";
 
 			PreparedStatement ps = this.connection.prepareStatement(query);
 
@@ -108,6 +106,5 @@ public class MySqlFacturaProductoDAO implements DAO<FacturaProducto> {
 			return null;
 		}
 	}
-
 
 }
