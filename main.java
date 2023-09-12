@@ -12,6 +12,10 @@ import org.apache.commons.csv.CSVFormat;
 import org.apache.commons.csv.CSVParser;
 import org.apache.commons.csv.CSVRecord;
 
+import integrador1Arqui.DAO.MySqlClienteDAO;
+import integrador1Arqui.DAO.MySqlFacturaDAO;
+import integrador1Arqui.DAO.MySqlFacturaProductoDAO;
+import integrador1Arqui.DAO.MySqlProductoDAO;
 import integrador1Arqui.clases.Cliente;
 import integrador1Arqui.clases.Factura;
 import integrador1Arqui.clases.FacturaProducto;
@@ -27,11 +31,12 @@ public class main {
 		AbstractDAOFactory mysqlFactory = AbstractDAOFactory.getDAOFactory(1);
 
 		// obtenemos los daos de la sql factory
-		DAO<Producto> sqlProductoDAO = mysqlFactory.getProductoDAO();
-		DAO<Cliente> sqlClienteDAO = mysqlFactory.getClienteDAO();
-		DAO<FacturaProducto> sqlFacturaProductoDAO = mysqlFactory.getFacturaProductoDAO();
-		DAO<Factura> sqlFacturaDAO = mysqlFactory.getFacturaDAO();
+		MySqlProductoDAO sqlProductoDAO = ((MySqlProductoDAO)mysqlFactory.getProductoDAO());
+		MySqlClienteDAO sqlClienteDAO = ((MySqlClienteDAO)mysqlFactory.getClienteDAO());
+		MySqlFacturaProductoDAO sqlFacturaProductoDAO = ((MySqlFacturaProductoDAO)mysqlFactory.getFacturaProductoDAO());
+		MySqlFacturaDAO sqlFacturaDAO = ((MySqlFacturaDAO)mysqlFactory.getFacturaDAO());
 
+		/////////////////////////INSERCIONES//////////////////////////////
 		// insertamos masivamente en la tabla producto
 		Iterator<Producto> itProductos = obtenerProductos().iterator();
 		while (itProductos.hasNext()) {
@@ -56,6 +61,15 @@ public class main {
 			Cliente cliente = itClientes.next();
 			sqlClienteDAO.insert(cliente);
 		}
+		/////////////////////////INSERCIONES//////////////////////////////
+		
+		List<Cliente> clientesMasFacturaron = sqlClienteDAO.obtenerClientesMasFacturaron();
+		Producto productoMasRecaudo = sqlFacturaProductoDAO.getProductoQueMasRecaudo();
+		
+		for (Cliente cliente : clientesMasFacturaron) {
+			System.out.println(cliente);
+		}
+		System.out.println(productoMasRecaudo);
 	}
 
 	public static List<Producto> obtenerProductos() throws FileNotFoundException, IOException {
@@ -104,5 +118,4 @@ public class main {
 		}
 		return lista;
 	}
-	// lo mismo para el resto de csv
 }
