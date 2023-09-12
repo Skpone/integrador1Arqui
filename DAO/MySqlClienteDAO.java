@@ -8,6 +8,7 @@ import java.util.ArrayList;
 import java.util.List;
 
 import integrador1Arqui.clases.Cliente;
+import integrador1Arqui.clases.Producto;
 import integrador1Arqui.interfaces.DAO;
 
 public class MySqlClienteDAO implements DAO<Cliente> {
@@ -123,4 +124,26 @@ public class MySqlClienteDAO implements DAO<Cliente> {
 		}
 	}
 
+	public List<Cliente> obtenerClientesMasFacturaron() {
+		ArrayList<Cliente> clientes = new ArrayList<Cliente>();
+		try {
+			String query = "SELECT c.idCliente, c.nombre, c.email, ( "
+					+ "SELECT SUM(fp.cantidad * pr.valor)" + "FROM factura_producto AS fp"
+					+ "INNER JOIN producto AS pr ON fp.idProducto = pr.idProducto" + "WHERE fp.idFactura IN ("
+					+ "SELECT idFactura" + "FROM factura AS f" + "WHERE f.idCliente = c.idCliente )"
+					+ ") AS total_gastado FROM cliente AS c" + "ORDER BY total_gastado DESC;";
+
+			PreparedStatement ps = this.connection.prepareStatement(query);
+			ResultSet rs = ps.executeQuery();
+
+			while (rs.next()) {
+				Cliente cliente = new Cliente(rs.getInt(1), rs.getString(2), rs.getString(3));
+				clientes.add(cliente);
+			}
+		} catch (SQLException error) {
+			error.printStackTrace();
+			return null;
+		}
+		return clientes;
+	}
 }
