@@ -85,4 +85,29 @@ public class MySqlFacturaProductoDAO implements DAO<FacturaProducto> {
 		return false;
 	}
 
+	public Producto getProductoQueMasRecaudo() {
+		try {
+			String query = "SELECT p.idProducto, p.nombre, SUM(fp.cantidad * p.valor) AS recaudacion " +
+							"FROM factura_producto fp " +
+							"INNER JOIN producto p ON fp.idProducto = p.idProducto " +
+							"GROUP BY p.idProducto, p.nombre " +
+							"ORDER BY recaudacion DESC " +
+							"LIMIT 1";
+
+			PreparedStatement ps = this.connection.prepareStatement(query);
+
+			ResultSet rs = ps.executeQuery();
+
+			if (rs.next()) {
+				return new Producto(rs.getInt(1), rs.getString(2), rs.getFloat(3));
+			} else {
+				return null;
+			}
+		} catch (SQLException error) {
+			error.printStackTrace();
+			return null;
+		}
+	}
+
+
 }
