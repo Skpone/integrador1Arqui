@@ -1,5 +1,10 @@
 package integrador1Arqui.DAO;
+
 import java.sql.Connection;
+import java.sql.PreparedStatement;
+import java.sql.ResultSet;
+import java.sql.SQLException;
+import java.util.ArrayList;
 import java.util.List;
 
 import integrador1Arqui.clases.Cliente;
@@ -7,25 +12,27 @@ import integrador1Arqui.interfaces.DAO;
 
 public class MySqlClienteDAO implements DAO<Cliente> {
 	private Connection connection;
-	
-	
+
 	public MySqlClienteDAO(Connection connection) {
 		this.connection = connection;
 	}
-	
-	
+
 	@Override
-	public void insert(int id, String nombre, String email) throws SQLException {
-		String query = "INSERT INTO cliente (idCliente, nombre, email) VALUES (?, ?, ?)";
-		PreparedStatement ps = this.connection.prepareStatement(query);
-		ps.setInt(1, id);
-		ps.setString(2, nombre);
-		ps.setString(3, email);
+	public void insert(Cliente cliente) {
+		try {
+			String query = "INSERT INTO cliente (idCliente, nombre, email) VALUES (?, ?, ?)";
+			PreparedStatement ps = this.connection.prepareStatement(query);
+			ps.setInt(1, cliente.getId());
+			ps.setString(2, cliente.getNombre());
+			ps.setString(3, cliente.getEmail());
 
-		ps.executeUpdate();
-		ps.close();
+			ps.executeUpdate();
+			ps.close();
 
-		this.connection.commit();
+			this.connection.commit();
+		} catch (SQLException error) {
+			error.printStackTrace();
+		}
 	}
 
 	@Override
@@ -43,18 +50,16 @@ public class MySqlClienteDAO implements DAO<Cliente> {
 			error.printStackTrace();
 			return false;
 		}
-
-		return false;
 	}
 
 	@Override
-	public boolean update(int id, String nombre, String email) {
+	public boolean update(Cliente cliente) {
 		try {
 			String query = "UPDATE cliente SET nombre = ?, email = ? WHERE idCliente = ?";
 			PreparedStatement ps = this.connection.prepareStatement(query);
-			ps.setString(1, nombre);
-			ps.setString(2, email);
-			ps.setInt(3, id);
+			ps.setString(1, cliente.getNombre());
+			ps.setString(2, cliente.getEmail());
+			ps.setInt(3, cliente.getId());
 
 			ps.executeUpdate();
 			ps.close();
@@ -64,8 +69,6 @@ public class MySqlClienteDAO implements DAO<Cliente> {
 			error.printStackTrace();
 			return false;
 		}
-
-		return false;
 	}
 
 	@Override
