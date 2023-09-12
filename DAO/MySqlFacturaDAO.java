@@ -1,30 +1,36 @@
 package integrador1Arqui.DAO;
 
 import java.sql.Connection;
+import java.sql.PreparedStatement;
+import java.sql.ResultSet;
+import java.sql.SQLException;
+import java.util.ArrayList;
 import java.util.List;
-
 import integrador1Arqui.clases.Factura;
 import integrador1Arqui.interfaces.DAO;
 
 public class MySqlFacturaDAO implements DAO<Factura> {
 	private Connection connection;
-	
+
 	public MySqlFacturaDAO(Connection connection) {
 		this.connection = connection;
 	}
 
-	
 	@Override
-	public void insert(int idFactura, int idCliente) throws SQLException {
-		String query = "INSERT INTO factura (idFactura, idCliente) VALUES (?, ?)";
-		PreparedStatement ps = this.connection.prepareStatement(query);
-		ps.setInt(1, id);
-		ps.setInt(2, idCliente);
+	public void insert(Factura factura) {
+		try {
+			String query = "INSERT INTO factura (idFactura, idCliente) VALUES (?, ?)";
+			PreparedStatement ps = this.connection.prepareStatement(query);
+			ps.setInt(1, factura.getId());
+			ps.setInt(2, factura.getClienteID());
 
-		ps.executeUpdate();
-		ps.close();
+			ps.executeUpdate();
+			ps.close();
 
-		this.connection.commit();
+			this.connection.commit();
+		} catch (SQLException error) {
+			error.printStackTrace();
+		}
 	}
 
 	@Override
@@ -42,17 +48,15 @@ public class MySqlFacturaDAO implements DAO<Factura> {
 			error.printStackTrace();
 			return false;
 		}
-
-		return false;
 	}
 
 	@Override
-	public boolean update(int idFactura, int idCliente) {
+	public boolean update(Factura factura) {
 		try {
 			String query = "UPDATE factura SET idCliente = ? WHERE idFactura = ?";
 			PreparedStatement ps = this.connection.prepareStatement(query);
-			ps.setString(1, idCliente);
-			ps.setInt(2, idFactura);
+			ps.setInt(1, factura.getClienteID());
+			ps.setInt(2, factura.getId());
 
 			ps.executeUpdate();
 			ps.close();
@@ -62,8 +66,6 @@ public class MySqlFacturaDAO implements DAO<Factura> {
 			error.printStackTrace();
 			return false;
 		}
-
-		return false;
 	}
 
 	@Override

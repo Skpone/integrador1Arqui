@@ -1,6 +1,10 @@
 package integrador1Arqui.DAO;
 
 import java.sql.Connection;
+import java.sql.PreparedStatement;
+import java.sql.ResultSet;
+import java.sql.SQLException;
+import java.util.ArrayList;
 import java.util.List;
 
 import integrador1Arqui.clases.FacturaProducto;
@@ -8,35 +12,27 @@ import integrador1Arqui.interfaces.DAO;
 
 public class MySqlFacturaProductoDAO implements DAO<FacturaProducto> {
 	private Connection connection;
-	
+
 	public MySqlFacturaProductoDAO(Connection connection) {
 		this.connection = connection;
 	}
 
-	
 	@Override
-	public void insert(int idFactura, int idProducto, int cantidad) throws SQLException {
-		String query = "INSERT INTO factura_producto (idFactura, idProducto, cantidad) VALUES (?, ?, ?)";
-		PreparedStatement ps = this.connection.prepareStatement(query);
-		ps.setInt(1, idFactura);
-		ps.setInt(2, idProducto);
-		ps.setInt(3, cantidad);
+	public void insert(FacturaProducto facturaProducto) {
+		try {
+			String query = "INSERT INTO factura_producto (idFactura, idProducto, cantidad) VALUES (?, ?, ?)";
+			PreparedStatement ps = this.connection.prepareStatement(query);
+			ps.setInt(1, facturaProducto.getIdFactura());
+			ps.setInt(2, facturaProducto.getIdProducto());
+			ps.setInt(3, facturaProducto.getCantidad());
 
-		ps.executeUpdate();
-		ps.close();
+			ps.executeUpdate();
+			ps.close();
 
-		this.connection.commit();
-	}
-
-	@Override
-	public boolean delete(int id) {
-		// TODO Auto-generated method stub
-	}
-
-	@Override
-	public boolean update(int id) {
-		// TODO Auto-generated method stub
-		return false;
+			this.connection.commit();
+		} catch (SQLException error) {
+			error.printStackTrace();
+		}
 	}
 
 	@Override
@@ -75,6 +71,18 @@ public class MySqlFacturaProductoDAO implements DAO<FacturaProducto> {
 		} catch (SQLException error) {
 			error.printStackTrace();
 		}
+	}
+
+	@Override
+	public boolean delete(int id) {
+		// TODO Auto-generated method stub
+		return false;
+	}
+
+	@Override
+	public boolean update(FacturaProducto objeto) {
+		// TODO Auto-generated method stub
+		return false;
 	}
 
 }

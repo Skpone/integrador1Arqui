@@ -1,6 +1,10 @@
 package integrador1Arqui.DAO;
 
 import java.sql.Connection;
+import java.sql.PreparedStatement;
+import java.sql.ResultSet;
+import java.sql.SQLException;
+import java.util.ArrayList;
 import java.util.List;
 
 import integrador1Arqui.clases.Producto;
@@ -8,24 +12,27 @@ import integrador1Arqui.interfaces.DAO;
 
 public class MySqlProductoDAO implements DAO<Producto> {
 	private Connection connection;
-	
+
 	public MySqlProductoDAO(Connection connection) {
 		this.connection = connection;
 	}
 
-	
 	@Override
-	public void insert(int id, String nombre, float valor) throws SQLException {
-		String query = "INSERT INTO producto (idProducto, nombre, valor) VALUES (?, ?, ?)";
-		PreparedStatement ps = this.connection.prepareStatement(query);
-		ps.setInt(1, id);
-		ps.setString(2, nombre);
-		ps.setFloat(3, valor);
+	public void insert(Producto producto) {
+		try {
+			String query = "INSERT INTO producto (idProducto, nombre, valor) VALUES (?, ?, ?)";
+			PreparedStatement ps = this.connection.prepareStatement(query);
+			ps.setInt(1, producto.getId());
+			ps.setString(2, producto.getNombre());
+			ps.setFloat(3, producto.getValor());
 
-		ps.executeUpdate();
-		ps.close();
+			ps.executeUpdate();
+			ps.close();
 
-		this.connection.commit();
+			this.connection.commit();
+		} catch (SQLException error) {
+			error.printStackTrace();
+		}
 	}
 
 	@Override
@@ -43,18 +50,16 @@ public class MySqlProductoDAO implements DAO<Producto> {
 			error.printStackTrace();
 			return false;
 		}
-
-		return false;
 	}
 
 	@Override
-	public boolean update(int id, String nombre, float valor) {
+	public boolean update(Producto producto) {
 		try {
 			String query = "UPDATE producto SET nombre = ?, valor = ? WHERE idProducto = ?";
 			PreparedStatement ps = this.connection.prepareStatement(query);
-			ps.setString(1, nombre);
-			ps.setFloat(2, valor);
-			ps.setInt(3, id);
+			ps.setString(1, producto.getNombre());
+			ps.setFloat(2, producto.getValor());
+			ps.setInt(3, producto.getId());
 
 			ps.executeUpdate();
 			ps.close();
@@ -64,8 +69,6 @@ public class MySqlProductoDAO implements DAO<Producto> {
 			error.printStackTrace();
 			return false;
 		}
-
-		return false;
 	}
 
 	@Override
