@@ -32,4 +32,10 @@ public class Cliente {
 		this.email = email;
 	}
 	
+	@Override
+	public String toString() {
+		String string = this.getId()+ ", " + this.getNombre() + ", " + this.getEmail();
+		return string;
+	}
+	
 }

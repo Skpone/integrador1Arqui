@@ -38,6 +38,7 @@ public class main {
 
 		///////////////////////// INSERCIONES//////////////////////////////
 		// insertamos masivamente en la tabla cliente
+		// COMENTADO SI YA SE REALIZO UNA VEZ LA INSERCION MASIVA
 		/*
 		Iterator<Cliente> itClientes = obtenerClientes().iterator();
 		while (itClientes.hasNext()) {
@@ -67,9 +68,12 @@ public class main {
 		Producto productoMasRecaudo = sqlFacturaProductoDAO.getProductoQueMasRecaudo();
 		List<Cliente> clientesMasFacturaron = sqlClienteDAO.obtenerClientesMasFacturaron();
 
+		System.out.println("CLIENTES MAS FACTURARON:");
 		for (Cliente cliente : clientesMasFacturaron) {
 			System.out.println(cliente);
 		}
+		
+		System.out.println("PRODUCTO QUE MAS RECAUDO:");
 		System.out.println(productoMasRecaudo);
 	}
 

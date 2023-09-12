@@ -31,4 +31,11 @@ public class Producto {
 	public int getId() {
 		return id;
 	}
+	
+	@Override
+	public String toString() {
+		String string = this.getId()+ ", " + this.getNombre() + ", " + this.getValor();
+		return string;
+	}
+	
 }
