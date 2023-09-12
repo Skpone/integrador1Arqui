@@ -15,6 +15,7 @@ public class MySqlProductoDAO implements DAO<Producto> {
 
 	public MySqlProductoDAO(Connection connection) {
 		this.connection = connection;
+		this.createTable();
 	}
 
 	@Override

@@ -30,13 +30,20 @@ public class main {
 		// usando el abstract factory obtenermos el mySQL factory
 		AbstractDAOFactory mysqlFactory = AbstractDAOFactory.getDAOFactory(1);
 
-		// obtenemos los daos de la sql factory
-		MySqlProductoDAO sqlProductoDAO = ((MySqlProductoDAO)mysqlFactory.getProductoDAO());
-		MySqlClienteDAO sqlClienteDAO = ((MySqlClienteDAO)mysqlFactory.getClienteDAO());
-		MySqlFacturaProductoDAO sqlFacturaProductoDAO = ((MySqlFacturaProductoDAO)mysqlFactory.getFacturaProductoDAO());
-		MySqlFacturaDAO sqlFacturaDAO = ((MySqlFacturaDAO)mysqlFactory.getFacturaDAO());
+		// obtenemos los daos de la sql factory, se crean las tablas si no existen
+		MySqlProductoDAO sqlProductoDAO = ((MySqlProductoDAO) mysqlFactory.getProductoDAO());
+		MySqlClienteDAO sqlClienteDAO = ((MySqlClienteDAO) mysqlFactory.getClienteDAO());
+		MySqlFacturaProductoDAO sqlFacturaProductoDAO = ((MySqlFacturaProductoDAO) mysqlFactory.getFacturaProductoDAO());
+		MySqlFacturaDAO sqlFacturaDAO = ((MySqlFacturaDAO) mysqlFactory.getFacturaDAO());
 
-		/////////////////////////INSERCIONES//////////////////////////////
+		///////////////////////// INSERCIONES//////////////////////////////
+		// insertamos masivamente en la tabla cliente
+		/*
+		Iterator<Cliente> itClientes = obtenerClientes().iterator();
+		while (itClientes.hasNext()) {
+			Cliente cliente = itClientes.next();
+			sqlClienteDAO.insert(cliente);
+		}
 		// insertamos masivamente en la tabla producto
 		Iterator<Producto> itProductos = obtenerProductos().iterator();
 		while (itProductos.hasNext()) {
@@ -45,27 +52,21 @@ public class main {
 		}
 		// insertamos masivamente en la tabla factura
 		Iterator<Factura> itFacturas = obtenerFacturas().iterator();
-		while(itFacturas.hasNext()) {
+		while (itFacturas.hasNext()) {
 			Factura factura = itFacturas.next();
 			sqlFacturaDAO.insert(factura);
 		}
 		// insertamos masivamente en la tabla facturaProducto
 		Iterator<FacturaProducto> itFacturasProductos = obtenerFacturasProductos().iterator();
-		while(itFacturasProductos.hasNext()) {
+		while (itFacturasProductos.hasNext()) {
 			FacturaProducto facturaProducto = itFacturasProductos.next();
 			sqlFacturaProductoDAO.insert(facturaProducto);
-		}
-		// insertamos masivamente en la tabla cliente
-		Iterator<Cliente> itClientes = obtenerClientes().iterator();
-		while(itClientes.hasNext()) {
-			Cliente cliente = itClientes.next();
-			sqlClienteDAO.insert(cliente);
-		}
-		/////////////////////////INSERCIONES//////////////////////////////
+		}*/
+		///////////////////////// INSERCIONES//////////////////////////////
 		
-		List<Cliente> clientesMasFacturaron = sqlClienteDAO.obtenerClientesMasFacturaron();
 		Producto productoMasRecaudo = sqlFacturaProductoDAO.getProductoQueMasRecaudo();
-		
+		List<Cliente> clientesMasFacturaron = sqlClienteDAO.obtenerClientesMasFacturaron();
+
 		for (Cliente cliente : clientesMasFacturaron) {
 			System.out.println(cliente);
 		}

@@ -16,6 +16,7 @@ public class MySqlClienteDAO implements DAO<Cliente> {
 
 	public MySqlClienteDAO(Connection connection) {
 		this.connection = connection;
+		this.createTable();
 	}
 
 	@Override
@@ -127,11 +128,11 @@ public class MySqlClienteDAO implements DAO<Cliente> {
 	public List<Cliente> obtenerClientesMasFacturaron() {
 		ArrayList<Cliente> clientes = new ArrayList<Cliente>();
 		try {
-			String query = "SELECT c.idCliente, c.nombre, c.email, ( "
-					+ "SELECT SUM(fp.cantidad * pr.valor)" + "FROM factura_producto AS fp"
-					+ "INNER JOIN producto AS pr ON fp.idProducto = pr.idProducto" + "WHERE fp.idFactura IN ("
-					+ "SELECT idFactura" + "FROM factura AS f" + "WHERE f.idCliente = c.idCliente )"
-					+ ") AS total_gastado FROM cliente AS c" + "ORDER BY total_gastado DESC;";
+			String query = "SELECT c.idCliente, c.nombre, c.email, ( " + "SELECT SUM(fp.cantidad * pr.valor) "
+					+ "FROM factura_producto AS fp " + "INNER JOIN producto AS pr ON fp.idProducto = pr.idProducto "
+					+ "WHERE fp.idFactura IN (" + "SELECT idFactura " + "FROM factura AS f "
+					+ "WHERE f.idCliente = c.idCliente )" + ") AS total_gastado " + "FROM cliente AS c "
+					+ "ORDER BY total_gastado DESC;";
 
 			PreparedStatement ps = this.connection.prepareStatement(query);
 			ResultSet rs = ps.executeQuery();

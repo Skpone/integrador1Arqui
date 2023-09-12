@@ -14,6 +14,7 @@ public class MySqlFacturaDAO implements DAO<Factura> {
 
 	public MySqlFacturaDAO(Connection connection) {
 		this.connection = connection;
+		this.createTable();
 	}
 
 	@Override
